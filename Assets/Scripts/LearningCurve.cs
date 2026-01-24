@@ -283,7 +283,11 @@ public class LearningCurve : MonoBehaviour
 
     public void WorkingWithEnums()
     {
+        // Setting current state
+        PlayerAction CurrentAction = PlayerAction.Attack;
 
+        // Retrieving underlying type
+        int ActionCost = (int)CurrentAction;
     }
 
 
