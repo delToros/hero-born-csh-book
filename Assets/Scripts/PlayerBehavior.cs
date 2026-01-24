@@ -1,18 +1,30 @@
 using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
-{
+{   
+    // For moving
     public float MoveSpeed = 10f;
     public float RotateSpeed = 75f;
 
     private float _vInput;
     private float _hInput;
 
+    // For jumping
+    public float JumpVelocity = 5f;
+    private bool _isJumpung;
+
+    // To limit jump (not make inifinite jumps)
+    public float DistanceToGround = 0.1f;
+    public LayerMask GroundLayer;
+    private CapsuleCollider _col;
+
     private Rigidbody _rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+
+        _col = GetComponent<CapsuleCollider>();
     }
 
     // Update is called once per frame
@@ -21,12 +33,17 @@ public class PlayerBehavior : MonoBehaviour
         _vInput = Input.GetAxis("Vertical") * MoveSpeed;
         _hInput = Input.GetAxis("Horizontal") * RotateSpeed;
 
+        // Moving without using rididbody
         //transform.Translate(_vInput * Time.deltaTime * Vector3.forward);
         //transform.Rotate(_hInput * Time.deltaTime * Vector3.up);
+
+        // For Jumping
+        _isJumpung |= Input.GetKeyDown(KeyCode.J);
     }
 
     private void FixedUpdate()
     {
+        // For moving
         Vector3 rotation = Vector3.up * _hInput;
 
         Quaternion angleRot = Quaternion.Euler(rotation * Time.fixedDeltaTime);
@@ -34,5 +51,31 @@ public class PlayerBehavior : MonoBehaviour
         _rb.MovePosition(transform.position + (_vInput * Time.fixedDeltaTime * transform.forward));
 
         _rb.MoveRotation(_rb.rotation * angleRot);
+
+        // For jumping
+        if (IsGrounded() && _isJumpung)
+        {
+            _rb.AddForce(Vector3.up * JumpVelocity, ForceMode.Impulse);
+        }
+        _isJumpung = false;
+    }
+
+    private bool IsGrounded()
+    {
+        // variable to store the position at the bottom of the player’s CapsuleCollider component
+        Vector3 capsuleBottom = new(
+            _col.bounds.center.x,
+            _col.bounds.min.y,
+            _col.bounds.center.z);
+
+        bool grounded = Physics.CheckCapsule(
+            _col.bounds.center,
+            capsuleBottom,
+            DistanceToGround,
+            GroundLayer,
+            QueryTriggerInteraction.Ignore
+            );
+
+        return grounded;
     }
 }
