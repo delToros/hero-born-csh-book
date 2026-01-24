@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using UnityEditor.Timeline;
 using UnityEngine;
@@ -15,6 +16,13 @@ public class LearningCurve : MonoBehaviour
     public Transform CamTransform;
     public GameObject DirectionalLight;
     public Transform LightTransform;
+
+    // enums
+    // Basic definition
+    enum PlayerAction { Attack, Defend, Flee};
+
+    // enum with underlaying type
+    enum NewPlayerAction { Attack = 5, Defend = 8, Flee };
 
     int MyInteger = 3;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -272,6 +280,11 @@ public class LearningCurve : MonoBehaviour
         huntingBow.PrintWeaponStats();
     }
 
+
+    public void WorkingWithEnums()
+    {
+
+    }
 
 
     ///<summary>
