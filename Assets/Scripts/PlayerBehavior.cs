@@ -18,6 +18,12 @@ public class PlayerBehavior : MonoBehaviour
     public LayerMask GroundLayer;
     private CapsuleCollider _col;
 
+    // For shooting
+    public GameObject Bullet;
+    public float BulletSpeed = 100f;
+
+    private bool _isShooting;
+
     private Rigidbody _rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,6 +45,9 @@ public class PlayerBehavior : MonoBehaviour
 
         // For Jumping
         _isJumpung |= Input.GetKeyDown(KeyCode.J);
+
+        // For Shooting
+        _isShooting |= Input.GetKeyDown(KeyCode.Space);
     }
 
     private void FixedUpdate()
@@ -58,6 +67,23 @@ public class PlayerBehavior : MonoBehaviour
             _rb.AddForce(Vector3.up * JumpVelocity, ForceMode.Impulse);
         }
         _isJumpung = false;
+
+        // For shooting
+        if (_isShooting)
+        {
+            Vector3 spawnPos = transform.position + transform.forward * 1f;
+
+            GameObject newBullet = Instantiate(
+                Bullet,//Object
+                spawnPos,//Position
+                transform.rotation);//Rotation
+
+            Rigidbody bulletRB = newBullet.GetComponent<Rigidbody>();
+
+            bulletRB.linearVelocity = transform.forward * BulletSpeed;
+        }
+
+        _isShooting = false;
     }
 
     private bool IsGrounded()
