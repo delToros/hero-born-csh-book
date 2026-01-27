@@ -1,5 +1,9 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+
+// For restarting the game
+using UnityEngine.SceneManagement;
 
 public class GameBehavior : MonoBehaviour
 {
@@ -12,12 +16,21 @@ public class GameBehavior : MonoBehaviour
     public TMP_Text ItemText;
     public TMP_Text ProgressText;
 
+    // For Win Condition
+    public Button WinButton;
+
+    
+
+
+
     private void Start()
     {
+        // For displaying initial values (0)
         ItemText.text += _itemsCollected;
         HealthText.text += _playerHP;
     }
 
+    // This var will be modified in item behavior script
     public int Items
     {
         get { return _itemsCollected; }
@@ -30,6 +43,12 @@ public class GameBehavior : MonoBehaviour
             if (_itemsCollected >= MaxItems)
             {
                 ProgressText.text = "You've found all the Items!";
+
+                // For win condition
+                WinButton.gameObject.SetActive(true);
+
+                // For pausing the game
+                Time.timeScale = 0;
             }
             else
             {
@@ -48,5 +67,11 @@ public class GameBehavior : MonoBehaviour
             _playerHP = value;
             Debug.Log($"Lives: {_playerHP}");
         }
+    }
+
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(0);
+        Time.timeScale = 1;
     }
 }
