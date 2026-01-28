@@ -26,11 +26,17 @@ public class PlayerBehavior : MonoBehaviour
 
     private Rigidbody _rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    // For managing the Health from Game Manager
+    private GameBehavior _gameManager;
+
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
 
         _col = GetComponent<CapsuleCollider>();
+
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameBehavior>();
     }
 
     // Update is called once per frame
@@ -103,5 +109,13 @@ public class PlayerBehavior : MonoBehaviour
             );
 
         return grounded;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.name == "Enemy")
+        {
+            _gameManager.HP -= 1;
+        }
     }
 }

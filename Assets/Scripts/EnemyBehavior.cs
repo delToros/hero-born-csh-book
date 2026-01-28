@@ -15,9 +15,13 @@ public class EnemyBehavior : MonoBehaviour
     private int _locationIndex = 0;
     private NavMeshAgent _agent;
 
+    private Transform Player;
+
     private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
+
+        Player = GameObject.Find("Player").transform;
 
         InitializePatrolRoute();
 
@@ -36,6 +40,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (other.gameObject.name == "Player")
         {
+            _agent.destination = Player.position;
             Debug.Log("Spotted Player - attack!");
         }
     }
