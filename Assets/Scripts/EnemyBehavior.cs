@@ -24,6 +24,14 @@ public class EnemyBehavior : MonoBehaviour
         MoveToNextPatrolLocation();
     }
 
+    private void Update()
+    {
+        if (_agent.remainingDistance < 0.2f && !_agent.pathPending)
+        {
+            MoveToNextPatrolLocation();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "Player")
@@ -50,6 +58,10 @@ public class EnemyBehavior : MonoBehaviour
 
     void MoveToNextPatrolLocation()
     {
+        if (Locations.Count == 0) return;
+
         _agent.destination = Locations[_locationIndex].position;
+
+        _locationIndex = (_locationIndex + 1) % Locations.Count;
     }
 }
