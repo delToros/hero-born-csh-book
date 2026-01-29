@@ -17,6 +17,24 @@ public class EnemyBehavior : MonoBehaviour
 
     private Transform Player;
 
+    // For Enemy health & bullet collision
+    private int _lives = 3;
+    public int EnemyLives
+    {
+        get { return _lives; }
+
+        private set
+        {
+            _lives = value;
+
+            if (_lives <= 0)
+            {
+                Destroy(gameObject);
+                Debug.Log("Enemy down.");
+            }
+        }
+    }
+
     private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -68,5 +86,14 @@ public class EnemyBehavior : MonoBehaviour
         _agent.destination = Locations[_locationIndex].position;
 
         _locationIndex = (_locationIndex + 1) % Locations.Count;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            EnemyLives -= 1;
+            Debug.Log("We have a hit!");
+        }
     }
 }
