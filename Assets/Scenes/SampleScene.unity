@@ -3072,7 +3072,7 @@ MonoBehaviour:
   ItemText: {fileID: 25812996}
   ProgressText: {fileID: 1373155428}
   WinButton: {fileID: 1991555835}
-  LossButton: {fileID: 0}
+  LossButton: {fileID: 829282104}
 --- !u!4 &1912333929
 Transform:
   m_ObjectHideFlags: 0
