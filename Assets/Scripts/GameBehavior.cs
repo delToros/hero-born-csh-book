@@ -5,7 +5,7 @@ using UnityEngine.UI;
 // For restarting the game
 using UnityEngine.SceneManagement;
 
-public class GameBehavior : MonoBehaviour
+public class GameBehavior : MonoBehaviour, IManager
 {
     private int _itemsCollected = 0;
     private int _playerHP = 10;
@@ -22,12 +22,23 @@ public class GameBehavior : MonoBehaviour
     // For Loose condition
     public Button LossButton;
 
+    // For Interface
+    private string _state;
+
+    public string State
+    {
+        get { return _state; }
+        set { _state = value; }
+    }
+
 
     private void Start()
     {
         // For displaying initial values (0)
         ItemText.text += _itemsCollected;
         HealthText.text += _playerHP;
+
+        Initialize();
     }
 
     // This var will be modified in item behavior script
@@ -85,5 +96,12 @@ public class GameBehavior : MonoBehaviour
     {
         ProgressText.text = updateText;
         Time.timeScale = 0;
+    }
+
+    //For Interface
+    public void Initialize()
+    {
+        _state = "Game Manager initialized";
+        Debug.Log(_state);
     }
 }
