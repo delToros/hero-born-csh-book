@@ -15,8 +15,11 @@ public class ItemBehavior : MonoBehaviour
         {
             Destroy(gameObject);
             Debug.Log("Item Destroyed");
+            GameManager.Items += 1;
+
+            GameManager.PrintLootReport();
         }
 
-        GameManager.Items += 1;
+       
     }
 }

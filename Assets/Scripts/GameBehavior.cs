@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 // For restarting the game
 using UnityEngine.SceneManagement;
@@ -24,6 +25,16 @@ public class GameBehavior : MonoBehaviour, IManager
 
     // For Interface
     private string _state;
+
+    // For Stacks
+    // option 1 - basic creatinion
+    // public Stack<Loot> LootStack = new Stack<Loot>();
+
+    // option 2 - The "Target-Typed New" (Most Modern)
+    public Stack<Loot> LootStack = new();
+
+    // option 3 - the var ketword
+    // var lootStack = new Stack<Loot>();
 
     public string State
     {
@@ -103,5 +114,28 @@ public class GameBehavior : MonoBehaviour, IManager
     {
         _state = "Game Manager initialized";
         Debug.Log(_state);
+
+        // For Stacks
+        LootStack.Push(new Loot("Sword of Doom", 5));
+        LootStack.Push(new Loot("HP Boost", 1));
+        LootStack.Push(new Loot("Golden Key", 4));
+        LootStack.Push(new Loot("Winged Boots", 2));
+        LootStack.Push(new Loot("Mythril Bracer", 4));
+    }
+
+    public void PrintLootReport()
+    {
+        Debug.Log($"There are {LootStack.Count} loot items!");
+
+        var initialItem = LootStack.Peek();
+        Debug.Log($"{initialItem.Name} is the first PEEK item");
+
+        var currentItem = LootStack.Pop();
+        Debug.Log($"{currentItem.Name} is the first POP item");
+
+        var nextItem = LootStack.Peek();
+        Debug.Log($"{nextItem.Name} is the first PEEK item UPDATED");
+
+
     }
 }
