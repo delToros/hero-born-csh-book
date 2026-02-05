@@ -6,6 +6,9 @@ using System.Collections.Generic;
 // For restarting the game
 using UnityEngine.SceneManagement;
 
+//Learning LINQ
+using System.Linq;
+
 public class GameBehavior : MonoBehaviour, IManager
 {
     private int _itemsCollected = 0;
@@ -121,6 +124,9 @@ public class GameBehavior : MonoBehaviour, IManager
         LootStack.Push(new Loot("Golden Key", 4));
         LootStack.Push(new Loot("Winged Boots", 2));
         LootStack.Push(new Loot("Mythril Bracer", 4));
+
+        //FilterLoot();
+        FilterLoot_Lambda();
     }
 
     public void PrintLootReport()
@@ -135,7 +141,30 @@ public class GameBehavior : MonoBehaviour, IManager
 
         var nextItem = LootStack.Peek();
         Debug.Log($"{nextItem.Name} is the first PEEK item UPDATED");
+    }
 
+    public void FilterLoot()
+    {
+        var rareLoot = LootStack.Where(LootPredicate);
 
+        foreach (var item in rareLoot)
+        {
+            Debug.Log($"Rare item: {item.Name}");
+        }
+    }
+
+    public bool LootPredicate(Loot loot)
+    {
+        return loot.Rarity >= 3;
+    }
+
+    public void FilterLoot_Lambda()
+    {
+        var rareLoot = LootStack.Where(item => item.Rarity >= 3);
+
+        foreach (var item in rareLoot)
+        {
+            Debug.Log($"Rare item: {item.Name}");
+        }
     }
 }
