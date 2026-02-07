@@ -160,11 +160,32 @@ public class GameBehavior : MonoBehaviour, IManager
 
     public void FilterLoot_Lambda()
     {
-        var rareLoot = LootStack.Where(item => item.Rarity >= 3);
+        // Long version
+        /*
+        var rareLoot = LootStack
+            
+            .Where(item => item.Rarity >= 3)
+            .OrderBy(item => item.Rarity)
+
+            // This is Anonymous Type
+            .Select(item => new
+            {
+                item.Name
+            });
+            */
+
+        // Simplified virsion
+        var rareLoot = from item in LootStack
+                       where item.Rarity >= 3
+                       orderby item.Rarity
+                       select item;
+                       // for anonymous type:
+                       // select new {item.name}
+
 
         foreach (var item in rareLoot)
         {
-            Debug.Log($"Rare item: {item.Name}");
+            Debug.Log($"Rare YY item: {item.Name}");
         }
     }
 }
